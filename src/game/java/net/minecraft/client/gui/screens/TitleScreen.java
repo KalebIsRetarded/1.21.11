@@ -1,3 +1,4 @@
+
 package net.minecraft.client.gui.screens;
 
 import com.mojang.authlib.minecraft.BanDetails;
@@ -102,6 +103,7 @@ public class TitleScreen extends Screen {
         int j = this.width - i - 2;
         int k = 24;
         int l = this.height / 4 + 48;
+
         if (this.minecraft.isDemo()) {
             l = this.createDemoMenuOptions(l, 24);
         } else {
@@ -109,31 +111,65 @@ public class TitleScreen extends Screen {
         }
 
         l = this.createTestWorldButton(l, 24);
+
         SpriteIconButton spriteiconbutton = this.addRenderableWidget(
             CommonButtons.language(
-                20, p_344157_ -> this.minecraft.setScreen(new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager())), true
+                20,
+                p_344157_ -> this.minecraft.setScreen(
+                    new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager())
+                ),
+                true
             )
         );
+
         int i1 = this.width / 2 - 124;
         l += 36;
         spriteiconbutton.setPosition(i1, l);
+
         this.addRenderableWidget(
-            Button.builder(Component.translatable("menu.options"), p_344156_ -> this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options)))
+            Button.builder(
+                Component.translatable("menu.options"),
+                p_344156_ -> this.minecraft.setScreen(
+                    new OptionsScreen(this, this.minecraft.options)
+                )
+            )
                 .bounds(this.width / 2 - 100, l, 98, 20)
                 .build()
         );
+
         this.addRenderableWidget(
-            Button.builder(Component.translatable("menu.quit"), p_280831_ -> this.minecraft.stop()).bounds(this.width / 2 + 2, l, 98, 20).build()
+            Button.builder(
+                Component.translatable("menu.quit"),
+                p_280831_ -> this.minecraft.stop()
+            )
+                .bounds(this.width / 2 + 2, l, 98, 20)
+                .build()
         );
+
         SpriteIconButton spriteiconbutton1 = this.addRenderableWidget(
-            CommonButtons.accessibility(20, p_344158_ -> this.minecraft.setScreen(new AccessibilityOptionsScreen(this, this.minecraft.options)), true)
-        );
-        spriteiconbutton1.setPosition(this.width / 2 + 104, l);
-        this.addRenderableWidget(
-            new PlainTextButton(
-                j, this.height - 10, i, 10, COPYRIGHT_TEXT, p_280834_ -> this.minecraft.setScreen(new CreditsAndAttributionScreen(this)), this.font
+            CommonButtons.accessibility(
+                20,
+                p_344158_ -> this.minecraft.setScreen(
+                    new AccessibilityOptionsScreen(this, this.minecraft.options)
+                ),
+                true
             )
         );
+
+        spriteiconbutton1.setPosition(this.width / 2 + 104, l);
+
+        this.addRenderableWidget(
+            new PlainTextButton(
+                j,
+                this.height - 10,
+                i,
+                10,
+                COPYRIGHT_TEXT,
+                p_280834_ -> this.minecraft.setScreen(new CreditsAndAttributionScreen(this)),
+                this.font
+            )
+        );
+
         if (this.realmsNotificationsScreen == null) {
             this.realmsNotificationsScreen = new RealmsNotificationsScreen();
         }
@@ -147,8 +183,12 @@ public class TitleScreen extends Screen {
         if (SharedConstants.IS_RUNNING_IN_IDE) {
             this.addRenderableWidget(
                 Button.builder(
-                        Component.literal("Create Test World"), p_438731_ -> CreateWorldScreen.testWorld(this.minecraft, () -> this.minecraft.setScreen(this))
+                    Component.literal("Create Test World"),
+                    p_438731_ -> CreateWorldScreen.testWorld(
+                        this.minecraft,
+                        () -> this.minecraft.setScreen(this)
                     )
+                )
                     .bounds(this.width / 2 - 100, p_373114_ += p_372852_, 200, 20)
                     .build()
             );
@@ -159,25 +199,47 @@ public class TitleScreen extends Screen {
 
     private int createNormalMenuOptions(int p_96764_, int p_96765_) {
         this.addRenderableWidget(
-            Button.builder(Component.translatable("menu.singleplayer"), p_280832_ -> this.minecraft.setScreen(new SelectWorldScreen(this)))
+            Button.builder(
+                Component.translatable("menu.singleplayer"),
+                p_280832_ -> this.minecraft.setScreen(new SelectWorldScreen(this))
+            )
                 .bounds(this.width / 2 - 100, p_96764_, 200, 20)
                 .build()
         );
+
         Component component = this.getMultiplayerDisabledReason();
         boolean flag = component == null;
         Tooltip tooltip = component != null ? Tooltip.create(component) : null;
+
         int i;
-        this.addRenderableWidget(Button.builder(Component.translatable("menu.multiplayer"), p_280833_ -> {
-            Screen screen = (Screen)(this.minecraft.options.skipMultiplayerWarning ? new JoinMultiplayerScreen(this) : new SafetyScreen(this));
-            this.minecraft.setScreen(screen);
-        }).bounds(this.width / 2 - 100, i = p_96764_ + p_96765_, 200, 20).tooltip(tooltip).build()).active = flag;
+
         this.addRenderableWidget(
-                Button.builder(Component.translatable("menu.online"), p_315821_ -> this.minecraft.setScreen(new RealmsMainScreen(this)))
-                    .bounds(this.width / 2 - 100, p_96764_ = i + p_96765_, 200, 20)
-                    .tooltip(tooltip)
-                    .build()
+            Button.builder(
+                Component.translatable("menu.multiplayer"),
+                p_280833_ -> {
+                    Screen screen = (Screen)(
+                        this.minecraft.options.skipMultiplayerWarning
+                            ? new JoinMultiplayerScreen(this)
+                            : new SafetyScreen(this)
+                    );
+                    this.minecraft.setScreen(screen);
+                }
             )
-            .active = flag;
+                .bounds(this.width / 2 - 100, i = p_96764_ + p_96765_, 200, 20)
+                .tooltip(tooltip)
+                .build()
+        ).active = flag;
+
+        this.addRenderableWidget(
+            Button.builder(
+                Component.translatable("menu.online"),
+                p_315821_ -> this.minecraft.setScreen(new RealmsMainScreen(this))
+            )
+                .bounds(this.width / 2 - 100, p_96764_ = i + p_96765_, 200, 20)
+                .tooltip(tooltip)
+                .build()
+        ).active = flag;
+
         return p_96764_;
     }
 
@@ -188,6 +250,7 @@ public class TitleScreen extends Screen {
             return Component.translatable("title.multiplayer.disabled.banned.name");
         } else {
             BanDetails bandetails = this.minecraft.multiplayerBan();
+
             if (bandetails != null) {
                 return bandetails.expires() != null
                     ? Component.translatable("title.multiplayer.disabled.banned.temporary")
@@ -200,53 +263,67 @@ public class TitleScreen extends Screen {
 
     private int createDemoMenuOptions(int p_96773_, int p_96774_) {
         boolean flag = this.checkDemoWorldPresence();
+
         this.addRenderableWidget(
             Button.builder(
-                    Component.translatable("menu.playdemo"),
-                    p_329724_ -> {
-                        if (flag) {
-                            this.minecraft.createWorldOpenFlows().openWorld("Demo_World", () -> this.minecraft.setScreen(this));
-                        } else {
-                            this.minecraft
-                                .createWorldOpenFlows()
-                                .createFreshLevel(
-                                    "Demo_World", MinecraftServer.DEMO_SETTINGS, WorldOptions.DEMO_OPTIONS, WorldPresets::createNormalWorldDimensions, this
-                                );
-                        }
+                Component.translatable("menu.playdemo"),
+                p_329724_ -> {
+                    if (flag) {
+                        this.minecraft.createWorldOpenFlows().openWorld(
+                            "Demo_World",
+                            () -> this.minecraft.setScreen(this)
+                        );
+                    } else {
+                        this.minecraft.createWorldOpenFlows().createFreshLevel(
+                            "Demo_World",
+                            MinecraftServer.DEMO_SETTINGS,
+                            WorldOptions.DEMO_OPTIONS,
+                            WorldPresets::createNormalWorldDimensions,
+                            this
+                        );
                     }
-                )
+                }
+            )
                 .bounds(this.width / 2 - 100, p_96773_, 200, 20)
                 .build()
         );
+
         int i;
+
         Button button = this.addRenderableWidget(
             Button.builder(
-                    Component.translatable("menu.resetdemo"),
-                    p_307045_ -> {
-                        LevelStorageSource levelstoragesource = this.minecraft.getLevelSource();
+                Component.translatable("menu.resetdemo"),
+                p_307045_ -> {
+                    LevelStorageSource levelstoragesource = this.minecraft.getLevelSource();
 
-                        try (LevelStorageSource.LevelStorageAccess levelstoragesource$levelstorageaccess = levelstoragesource.createAccess("Demo_World")) {
-                            if (levelstoragesource$levelstorageaccess.hasWorldData()) {
-                                this.minecraft
-                                    .setScreen(
-                                        new ConfirmScreen(
-                                            this::confirmDemo,
-                                            Component.translatable("selectWorld.deleteQuestion"),
-                                            Component.translatable("selectWorld.deleteWarning", MinecraftServer.DEMO_SETTINGS.levelName()),
-                                            Component.translatable("selectWorld.deleteButton"),
-                                            CommonComponents.GUI_CANCEL
-                                        )
-                                    );
-                            }
-                        } catch (IOException ioexception) {
-                            SystemToast.onWorldAccessFailure(this.minecraft, "Demo_World");
-                            LOGGER.warn("Failed to access demo world", (Throwable)ioexception);
+                    try (
+                        LevelStorageSource.LevelStorageAccess levelstoragesource$levelstorageaccess =
+                            levelstoragesource.createAccess("Demo_World")
+                    ) {
+                        if (levelstoragesource$levelstorageaccess.hasWorldData()) {
+                            this.minecraft.setScreen(
+                                new ConfirmScreen(
+                                    this::confirmDemo,
+                                    Component.translatable("selectWorld.deleteQuestion"),
+                                    Component.translatable(
+                                        "selectWorld.deleteWarning",
+                                        MinecraftServer.DEMO_SETTINGS.levelName()
+                                    ),
+                                    Component.translatable("selectWorld.deleteButton"),
+                                    CommonComponents.GUI_CANCEL
+                                )
+                            );
                         }
+                    } catch (IOException ioexception) {
+                        SystemToast.onWorldAccessFailure(this.minecraft, "Demo_World");
+                        LOGGER.warn("Failed to access demo world", (Throwable)ioexception);
                     }
-                )
+                }
+            )
                 .bounds(this.width / 2 - 100, i = p_96773_ + p_96774_, 200, 20)
                 .build()
         );
+
         button.active = flag;
         return i;
     }
@@ -254,7 +331,11 @@ public class TitleScreen extends Screen {
     private boolean checkDemoWorldPresence() {
         try {
             boolean flag;
-            try (LevelStorageSource.LevelStorageAccess levelstoragesource$levelstorageaccess = this.minecraft.getLevelSource().createAccess("Demo_World")) {
+
+            try (
+                LevelStorageSource.LevelStorageAccess levelstoragesource$levelstorageaccess =
+                    this.minecraft.getLevelSource().createAccess("Demo_World")
+            ) {
                 flag = levelstoragesource$levelstorageaccess.hasWorldData();
             }
 
@@ -267,14 +348,21 @@ public class TitleScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics p_282860_, int p_281753_, int p_283539_, float p_282628_) {
+    public void render(
+        GuiGraphics p_282860_,
+        int p_281753_,
+        int p_283539_,
+        float p_282628_
+    ) {
         if (this.fadeInStart == 0L && this.fading) {
             this.fadeInStart = Util.getMillis();
         }
 
         float f = 1.0F;
+
         if (this.fading) {
             float f1 = (float)(Util.getMillis() - this.fadeInStart) / 2000.0F;
+
             if (f1 > 1.0F) {
                 this.fading = false;
             } else {
@@ -285,39 +373,133 @@ public class TitleScreen extends Screen {
             this.fadeWidgets(f);
         }
 
+        // Original panorama background
         this.renderPanorama(p_282860_, p_282628_);
-        super.render(p_282860_, p_281753_, p_283539_, p_282628_);
-        this.logoRenderer.renderLogo(p_282860_, this.width, this.logoRenderer.keepLogoThroughFade() ? 1.0F : f);
-        if (this.splash != null && !this.minecraft.options.hideSplashTexts().get()) {
-            this.splash.render(p_282860_, this.width, this.font, f);
-        }
 
-        String s = "Minecraft " + SharedConstants.getCurrentVersion().name();
-        if (this.minecraft.isDemo()) {
-            s = s + " Demo";
-        } else {
-            s = s + ("release".equalsIgnoreCase(this.minecraft.getVersionType()) ? "" : "/" + this.minecraft.getVersionType());
-        }
+        // Deepslate dark overlay
+        p_282860_.fillGradient(
+            0,
+            0,
+            this.width,
+            this.height,
+            0xD908101B,
+            0xF0090D16
+        );
 
-        if (Minecraft.checkModStatus().shouldReportAsModified()) {
-            s = s + I18n.get("menu.modded");
-        }
+        // Main Deepslate panel
+        int centerX = this.width / 2;
+        int panelLeft = centerX - 145;
+        int panelRight = centerX + 145;
+        int panelTop = this.height / 4 + 25;
+        int panelBottom = this.height / 4 + 190;
 
-        p_282860_.drawString(this.font, s, 2, this.height - 10, ARGB.white(f));
+        p_282860_.fillGradient(
+            panelLeft,
+            panelTop,
+            panelRight,
+            panelBottom,
+            0xE51C293B,
+            0xF00B1421
+        );
+
+        // Blue and purple gradient accent
+        p_282860_.fill(
+            panelLeft,
+            panelTop,
+            panelRight,
+            panelTop + 3,
+            0xFF428DFF
+        );
+
+        p_282860_.fill(
+            panelLeft,
+            panelTop + 3,
+            panelRight,
+            panelTop + 4,
+            0xFF795BFF
+        );
+
+        // Subtle panel borders
+        p_282860_.fill(
+            panelLeft,
+            panelTop,
+            panelLeft + 1,
+            panelBottom,
+            0xFF428DFF
+        );
+
+        p_282860_.fill(
+            panelRight - 1,
+            panelTop,
+            panelRight,
+            panelBottom,
+            0xFF428DFF
+        );
+
+        // Deepslate title
+        p_282860_.drawCenteredString(
+            this.font,
+            Component.literal("DEEPSLATE"),
+            centerX,
+            this.height / 4 - 20,
+            0xFFFFFFFF
+        );
+
+        // Subtitle
+        p_282860_.drawCenteredString(
+            this.font,
+            Component.literal("CLIENT  |  1.21.11"),
+            centerX,
+            this.height / 4 + 1,
+            0xFF9DB7D8
+        );
+
+        // Original Minecraft menu buttons
+        super.render(
+            p_282860_,
+            p_281753_,
+            p_283539_,
+            p_282628_
+        );
+
+        // Deepslate version label
+        p_282860_.drawString(
+            this.font,
+            "Deepslate Client 1.21.11",
+            8,
+            this.height - 12,
+            ARGB.white(f)
+        );
+
+        // Realms notifications
         if (this.realmsNotificationsEnabled() && f >= 1.0F) {
-            this.realmsNotificationsScreen.render(p_282860_, p_281753_, p_283539_, p_282628_);
+            this.realmsNotificationsScreen.render(
+                p_282860_,
+                p_281753_,
+                p_283539_,
+                p_282628_
+            );
         }
     }
 
     @Override
-    public void renderBackground(GuiGraphics p_294355_, int p_295208_, int p_294981_, float p_294740_) {
+    public void renderBackground(
+        GuiGraphics p_294355_,
+        int p_295208_,
+        int p_294981_,
+        float p_294740_
+    ) {
     }
 
     @Override
-    public boolean mouseClicked(MouseButtonEvent p_446070_, boolean p_435005_) {
+    public boolean mouseClicked(
+        MouseButtonEvent p_446070_,
+        boolean p_435005_
+    ) {
         return super.mouseClicked(p_446070_, p_435005_)
             ? true
-            : this.realmsNotificationsEnabled() && this.realmsNotificationsScreen.mouseClicked(p_446070_, p_435005_);
+            : this.realmsNotificationsEnabled()
+                && this.realmsNotificationsScreen.mouseClicked(p_446070_, p_435005_);
     }
 
     @Override
@@ -330,6 +512,7 @@ public class TitleScreen extends Screen {
     @Override
     public void added() {
         super.added();
+
         if (this.realmsNotificationsScreen != null) {
             this.realmsNotificationsScreen.added();
         }
@@ -337,7 +520,10 @@ public class TitleScreen extends Screen {
 
     private void confirmDemo(boolean p_96778_) {
         if (p_96778_) {
-            try (LevelStorageSource.LevelStorageAccess levelstoragesource$levelstorageaccess = this.minecraft.getLevelSource().createAccess("Demo_World")) {
+            try (
+                LevelStorageSource.LevelStorageAccess levelstoragesource$levelstorageaccess =
+                    this.minecraft.getLevelSource().createAccess("Demo_World")
+            ) {
                 levelstoragesource$levelstorageaccess.deleteLevel();
             } catch (IOException ioexception) {
                 SystemToast.onWorldDeleteFailure(this.minecraft, "Demo_World");
