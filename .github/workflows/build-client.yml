@@ -1,4 +1,3 @@
-
 name: Build Deepslate Client
 
 on:
@@ -10,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Get source code
@@ -26,12 +25,15 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build browser client
-        run: ./gradlew makeMainOfflineDownload --no-daemon
+        run: ./gradlew :teavm:generateJavaScript --no-daemon
 
-      - name: Save browser client files
+      - name: Show generated files
+        run: find teavm/build -type f | head -100
+
+      - name: Save browser client build
         uses: actions/upload-artifact@v4
         with:
           name: deepslate-client
-          path: target_teavm_javascript/javascript/
+          path: teavm/build/
           if-no-files-found: error
           retention-days: 7
